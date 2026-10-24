@@ -1,0 +1,40 @@
+# Tipos, lint e testes a cada push na main e em todo pull request.
+# Os testes de IDOR e de segurança, que precisam de uma stack Supabase,
+# rodam no CI do repositório privado e não estão neste retrato.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  testes:
+    name: Tipos, lint e testes
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Instalar dependências
+        run: bun install --frozen-lockfile
+
+      - name: Tipos (tsc --noEmit)
+        run: bun x tsc --noEmit
+
+      - name: Lint (eslint .)
+        run: bun run lint
+
+      - name: Testes (vitest)
+        run: bun run test
