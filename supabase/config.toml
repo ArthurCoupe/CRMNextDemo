@@ -1,0 +1,45 @@
+project_id = "crm-local"
+
+[db]
+port = 54422
+shadow_port = 54420
+major_version = 15
+
+[db.pooler]
+enabled = false
+
+[api]
+enabled = true
+port = 54421
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[studio]
+enabled = true
+port = 54423
+
+[local_smtp]
+enabled = true
+port = 54424
+
+[auth]
+enabled = true
+site_url = "http://localhost:8080"
+additional_redirect_urls = ["http://localhost:8080/nova-senha"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 10
+
+enable_signup = false
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+secure_password_change = true
+
+[analytics]
+enabled = true
+port = 54429
